@@ -115,7 +115,7 @@ function getCourseProgress(course){
     const value=localStorage.getItem(key);
 
     // ❗ agar value nahi hai → usse 100 maan
-    totalPercent += value ? Number(value) : 100;
+    totalPercent += value ? Number(value) : 0;
 
   });
 
