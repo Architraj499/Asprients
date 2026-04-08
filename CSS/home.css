@@ -207,7 +207,8 @@ footer p {
 
 .form-updates {
   position: sticky;
-  z-index: 1200;
+  top: 65px;
+  z-index: 100;
 
   background: var(--card);
   backdrop-filter: blur(6px);
