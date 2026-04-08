@@ -708,3 +708,33 @@ window.closePlayer = function () {
 
 
 
+function startCountdown(elementId, targetDate) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = new Date(targetDate).getTime() - now;
+
+    if (distance <= 0) {
+      el.innerHTML = "Started";
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((distance / (1000 * 60)) % 60);
+    const seconds = Math.floor((distance / 1000) % 60);
+
+    el.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+}
+
+// Example Dates
+startCountdown("boardsCountdown", "2026-02-01T09:00:00");
+startCountdown("cuetCountdown", "2026-05-11T09:00:00");
+startCountdown("caSepCountdown", "2026-09-16T09:00:00");
+startCountdown("caMayCountdown", "2026-05-14T09:00:00");

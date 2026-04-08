@@ -27,35 +27,42 @@ html,body{
 a{
     text-decoration:none; color:var(--text);
 }
-.navbar{
-    position:sticky; 
-    display:flex;
-    justify-content:space-between;
-    align-items:center; 
-    padding:12px 24px;
-    background:var(--card); 
-    box-shadow:0 6px 18px rgba(0,0,0,0.3);
+/* =========================
+   NAVBAR
+========================= */
+.navbar {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:12px 24px;
+  background:var(--card); box-shadow:0 6px 18px rgba(0,0,0,0.3);
+  position:sticky; top:0; bottom: 0; z-index:100;
 }
 .navbar .logo img { height:40px; border-radius: 90%; }
-.navbar nav a{
-    margin:0 10px; font-weight:600;
+.navbar nav a { margin:0 10px; font-weight:600; }
+.navbar nav a.active { color:var(--accent); }
+.navbar .user-info { display:flex; align-items:center; gap:10px; }
+.navbar button {
+  padding:6px 10px; border-radius:8px; border:none; cursor:pointer;
+  background:var(--accent); color:#fff; transition:0.3s;
 }
-.navbar nav a.active{
-    color:var(--accent);
+.navbar button:hover { opacity:0.85; }
+
+/* Phones only */
+@media (max-width: 768px) {
+
+  div.time-tracker p {
+    font-size: 0px;
+
+  }
+  #websiteTime{
+    font-size: 10px !important;
+    padding: 2px 6px !important;
+    position: absolute;   /* ya relative agar parent navbar ho */
+    bottom: 0;            /* navbar ke bottom pe */
+    left: 50%;            /* center me */
+    transform: translateX(-50%);
+  }
 }
-.navbar .user-info{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-.navbar button{
-    padding:6px 10px; 
-    border-radius:8px; 
-    border:none; 
-    cursor:pointer; 
-    background:var(--accent); 
-    color:#fff;
-}
+
 .hero{display:flex;
   justify-content:center;
   align-items:center;
@@ -408,4 +415,81 @@ footer {
 .mock-btn:hover {
   background: linear-gradient(90deg,var(--accent),var(--accent-2));
   color: #fff;
+}
+
+.form-updates {
+  position: sticky;
+  top: 70px;
+  z-index: 1200;
+
+  background: var(--card);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+
+  padding: 10px 0;
+}
+
+.updates-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  font-size: 14px;
+  color: var(--text);
+}
+
+
+.live-badge {
+  background: linear-gradient(135deg, #ff3b3b, #c62828);
+  color: #fff;
+
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+
+  padding: 4px 10px;
+  border-radius: 999px;
+
+  animation: livePulse 2s infinite;
+}
+
+
+.form-updates a {
+  color: var(--accent-2);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+}
+
+.form-updates a:hover {
+  opacity: 0.85;
+}
+
+
+@keyframes livePulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 59, 59, 0.5); }
+  70% { box-shadow: 0 0 0 8px rgba(255, 59, 59, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 59, 59, 0); }
+}
+
+
+@media (max-width: 600px) {
+  .updates-inner {
+    flex-wrap: wrap;
+    gap: 6px;
+    text-align: center;
+  }
+
+  .form-updates a {
+    font-size: 13px;
+  }
 }
