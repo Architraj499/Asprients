@@ -338,7 +338,7 @@ const firebaseConfig = {
     // ---------- history modal ----------
     historyBtn.addEventListener('click', async ()=>{
       if(!user){ alert('Please sign in (anonymous allowed) to view history'); return; }
-      historyModal.classList.add('show'); historyList.innerHTML = 'Loading...';
+      historyModal.classList.add('show'); historyList.innerHTML = '';
       try{
         const snaps = await getDocs(collection(db, 'users', user.uid, 'progress'));
         historyList.innerHTML = '';
