@@ -419,7 +419,6 @@ footer {
 
 .form-updates {
   position: sticky;
-  top: 70px;
   z-index: 1200;
 
   background: var(--card);
