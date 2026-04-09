@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boards - Economics</title>
+    <link rel="stylesheet" href="CSS\sub.css">
+<link rel="icon" href="images/logo1.png" type="image/png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="210x210" href="android-chrome-192x192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="android-chrome-512x512.png">
+<link rel="mask-icon" href="safari-pinned-tab.svg" color="#5bbad5">
+<meta name="theme-color" content="#1f4068">
+</head>
+<body>
+ <header class="navbar">
+  <div class="logo"><img class="cuet-logo" src="images\logo.png" alt="CUET Logo"></div>
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="Boards.html" class="active">Boards</a> 
+    <a href="cuet.html">CUET</a>
+    <a href="cafoundation.html">CA Foundation</a>
+  </nav>
+  <div class="user-info">
+    Welcome,<a href="Profile.html"> <span id="usernameDisplay">User</span></a>
+    <button id="logoutBtn">Logout</button>
+    <button id="themeToggle">☀️</button>
+  </div>
+</header> 
+<!-- STICKY FORM UPDATES -->
+<div class="form-updates">
+  <div class="updates-inner">
+    <span class="live-badge">LIVE</span>
+
+     <a href="#" target="_blank">
+      Class 12th Result Decleared On - <b style="color:rgb(204, 8, 8)"><Strong>March 25th 2026</Strong></b>
+    </a>
+  </div>
+
+</div>
+<section class="hero">
+  <div class="hero-content">
+    <div class="surf">
+      <a href ="BoardsAcc.html">Accountancy</a>
+      <a href="BoardsBSt.html">Business Studies</a>
+      <a href="Boardseco.html" class="active">Economics</a>
+      <a href="soon.html">English</a>
+      <a href="soon.html">Entrepreneurship</a>
+      <a href="hindi.html">Hindi</a>
+    </div>
+    </div>
+   <div class="actions">
+        <div class="search" role="search" aria-label="Search lectures">
+          🔎 <input id="searchInput" placeholder="Search chapters, topics..." />
+        </div>
+        </section>
+   <div class="container">
+  <section class="subject-hero">
+    <div class="subject-card">
+      <h1>Economics</h1>
+      <div class="subject-meta">Class 12 |<a href="Pdfs/eco.pdf" target="_blank">  Syllabus</a> </div>
+      <div class="subject-actions">
+  <button class="filter-btn active" onclick="filterBy('all', event)">All</button>
+<button class="filter-btn" onclick="filterBy('pending', event)">Pending</button>
+<button class="filter-btn" onclick="filterBy('completed', event)">Completed</button>
+</div>
+
+
+
+    <div style="min-width:260px">
+      <div style="padding:12px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));">
+        <div style="display:flex; justify-content:space-between; gap:12px; align-items:center">
+        </div>
+            <div style="font-weight:800">Overall Progress</div>
+            <div class="muted">You have finished <strong id="overallPercent">0%</strong> of this subject</div>
+          </div>
+          <div class="ring" id="ringPercent">0%</div>
+        </div>
+        <div style="margin-top:10px" class="progress"><i id="overallBar"></i></div>
+      
+    
+ 
+   <nav class="tabs">
+   <nav class="tabs">
+    <button class="tab active" data-tab="lectures" onclick="openTab(event)">Lectures</button>
+   <button class="tab" data-tab="ncert" onclick="openTab(event)">NCERT</button>
+    <button class="tab" data-tab="notes" onclick="openTab(event)">Notes</button>
+    <button class="tab" data-tab="pyqs" onclick="openTab(event)">PYQs</button>
+    <button class="tab" data-tab="mock" onclick="openTab(event)">Mock Test</button>
+      </nav>
+    </div>
+    </div>
+
+
+ <section id="lectures" class="tabpanel">
+    <div class="grid" id="cardsGrid"></div>
+  </section>
+
+
+  <section id="mock" class="tabpanel" style="display:none">
+  <div class="grid" id="mockGrid"></div>
+</section>
+
+<section id="ncert" class="tabpanel" style="display:none">
+  <div class="grid" id="ncertGrid"></div>
+</section>
+
+  <section id="notes" class="tabpanel" style="display:none">
+    <div class="grid" id="notesGrid"></div>
+  </section>
+
+  <section id="pyqs" class="tabpanel" style="display:none">
+    <div class="grid" id="pyqGrid"></div>
+  </section>
+</div> 
+<div id="videoModal" class="modal"><div class="modal-box">
+  <div class="modal-header">
+    <div id="modalTitle">Playing</div>
+    <div style="display:flex; gap:8px; align-items:center">
+      <button class="btn ghost" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+  <div class="modal-body">
+    <iframe id="videoIframe" src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+  </div>
+</div></div>
+
+<div id="aiConfirmModal" class="ai-modal">
+  <div class="ai-modal-box">
+
+   <h2> Mock test Generation</h2>
+    <p class="ai-desc">
+      Course: <strong id="aiCourseName"></strong>
+
+    <p class="ai-desc">
+      Chapter: <strong id="aiChapterName"></strong>
+    </p>
+
+    <div class="ai-options">
+
+      <label>Difficulty</label>
+      <select id="aiDifficulty">
+        <option value="Easy">Easy</option>
+        <option value="Medium" selected>Medium</option>
+        <option value="Hard">Hard</option>
+      </select>
+
+      <label>Number of Questions</label>
+      <select id="aiCount">
+        <option value="10">10</option>
+        <option value="20" selected>20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+        <option value="50">50</option>
+        <option value="custom">Custom</option>
+      </select>
+<input 
+  type="number" 
+  id="aiCustomCount" 
+  placeholder="Enter number (5–100)"
+  min="5" 
+  max="100"
+  style="display:none; margin-top:6px; padding:8px; border-radius:8px; border:none;"
+>
+    </div>
+
+    <p class="ai-note">
+      Prompt will be copied and Gemini will open in a new tab.
+      Please paste the prompt there to generate your mock test.
+    </p>
+
+    <div class="ai-actions">
+      <button class="ai-cancel" onclick="closeAIModal()">Cancel</button>
+      <button class="ai-confirm" id="aiConfirmBtn">Generate</button>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+<div class="footer-wrapper">
+<footer class="footer">
+  <div class="footer-content">
+    <p><b>© 2025 Asprient. </b>All rights reserved. | Devloped By <b><a href="https://www.linkedin.com/in/architraj499" target="_blank">Archit</a></b></p> 
+    <div class="footer-links">
+      <a href="Privacy.html">Privacy Policy</a>
+      <a href="tou.html">Terms of Use</a>
+      <a href="contactus.html">Contact Us</a>
+      <a href="acd.html">Account Deletion</a>
+       <a href="personal.html">Personal Dashboard</a>
+    </div>
+  </div>
+</footer>
+</div>
+
+
+<script>
+window.LECTURES = [
+
+/* =====================================================
+   MICROECONOMICS – INTRODUCTORY MICRO (NCERT)
+   ===================================================== */
+
+/* CH 1: INTRODUCTION */
+{ section:'Microeconomics', id:'B_Micro 1', title:'Introduction: Simple Economy & Central Problems',
+  video:'#', notes:'#', ncert:'CUET Materials/NCERT/Economics/leec2dd/leec201.pdf',
+  pyq:'CUET Materials/Chapter Wise Test/Economics/CUET MCQs Ch 1.pdf', progress:0, teacher:'Tanya Munjal' },
+
+/* CH 2: THEORY OF CONSUMER BEHAVIOUR */
+{ section:'Microeconomics', id:'B_Micro 2', title:'Consumer Equilibrium',
+  video:'https://www.youtube.com/embed/pqaJ26YnvWI', notes:'#', ncert:'CUET Materials/NCERT/Economics/leec2dd/leec202.pdf',
+  pyq:'#', progress:0, teacher:'Tanya Munjal' },
+
+{ section:'Microeconomics', id:'B_Micro 3', title:'Demand and Elasticity of Demand',
+  video:'https://www.youtube.com/embed/XFzGR2rLLZg', notes:'#', ncert:'CUET Materials/NCERT/Economics/leec2dd/leec203.pdf',
+  pyq:'#', progress:0, teacher:'Tanya Munjal' },
+
+{ section:'Microeconomics', id:'B_Micro 4', title:'Production Function,Revenue and Costs',
+  video:'#', notes:'#', ncert:'#',
+  pyq:'#', progress:0, teacher:'Tanya Munjal' },
+
+{ section:'Microeconomics', id:'B_Micro 5', title:'Supply and Elasticity of Supply',
+  video:'#', notes:'#', ncert:'#',
+  pyq:'#', progress:0, teacher:'Tanya Munjal' },
+
+{ section:'Microeconomics', id:'B_Micro 6', title:' MARKET EQUILIBRIUM',
+  video:'#', notes:'#', ncert:'#',
+  pyq:'#', progress:0, teacher:'Tanya Munjal' },
+
+
+
+/* =====================================================
+   MACROECONOMICS (NCERT)
+   ===================================================== */
+
+{ section:'Macroeconomics', id:'B_Macro 1', title:'Introduction to Macroeconomics',
+  video:'https://www.youtube.com/embed/jTbbaBazcXw', notes:'#', ncert:'CUET Materials/NCERT//Economics/leec1dd/leec101.pdf',
+  pyq:'#', progress:0, teacher:'Manish Sir' },
+
+{ section:'Macroeconomics', id:'B_Macro 2', title:'National Income & Related Aggregates',
+  video:'#', notes:'#', ncert:'CUET Materials/NCERT//Economics/leec1dd/leec102.pdf',
+  pyq:'#', progress:0, teacher:'Manish Sir' },
+
+{ section:'Macroeconomics', id:'B_Macro 3', title:'Money & Banking',
+  video:'#', notes:'#', ncert:'CUET Materials/NCERT//Economics/leec1dd/leec103.pdf',
+  pyq:'#', progress:0, teacher:'Manish Sir' },
+
+{ section:'Macroeconomics', id:'B_Macro 4', title:'Aggregate Demand & Aggregate Supply',
+  video:'#', notes:'#', ncert:'CUET Materials/NCERT//Economics/leec1dd/leec104.pdf',
+  pyq:'#', progress:0, teacher:'Manish Sir' },
+
+
+
+{ section:'Macroeconomics', id:'B_Macro 5', title:'Government Budget & the Economy',
+  video:'#', notes:'#', ncert:'CUET Materials/NCERT//Economics/leec1dd/leec105.pdf',
+  pyq:'#', progress:0, teacher:'Manish Sir' },
+
+
+
+{ section:'Macroeconomics', id:'B_Macro 6', title:'Balance of Payments',
+  video:'#', notes:'#', ncert:'CUET Materials/NCERT//Economics/leec1dd/leec106.pdf',
+  pyq:'#', progress:0, teacher:'Manish Sir' },
+
+
+];
+</script>
+<script type="module" src="JavaScript/universal.js"></script>
+<script>
+  window.Subject = "Economics";
+  window.Course = "Boards";
+</script>
+ 
+</body>
+</html>
