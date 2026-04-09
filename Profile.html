@@ -2,153 +2,153 @@
 <html lang="en">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>My Profile</title>
+
   <link rel="stylesheet" href="CSS/profile.css">
   <link rel="stylesheet" href="CSS/sub.css">
   <link rel="icon" href="images/logo1.png" type="image/png">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="210x210" href="android-chrome-192x192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="android-chrome-512x512.png">
-<link rel="mask-icon" href="safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="210x210" href="android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="android-chrome-512x512.png">
+  <link rel="mask-icon" href="safari-pinned-tab.svg" color="#5bbad5">
 </head>
+
 <body data-theme="dark">
-    <header class="navbar">
-  <div class="logo">
-   <a  href="home.html"><img src="images\logo.png" alt="Logo"></i></a> 
-  </div>
-  <nav>
-    <a href="home.html">Home</a>
-    <a href="Boards.html">Boards</a> 
-    <a href="cuet.html">CUET</a>
-    <a href="cafoundation.html">CA Foundation</a>
-    <a href="profile.html" class="active">Profile</a>
-    
-  </nav>
- <div class="user-info">
-    Welcome,<a href="Profile.html"> <span id="usernameDisplay">User</span></a>
-    <button id="logoutBtn">Logout</button>
-    <button id="themeToggle">☀️</button>
-  </div>
-</header>
-<div class="profile-wrapper">
 
-  <!-- PROFILE HEADER -->
-  <div class="profile-header">
-    <div class="avatar avatar-upload" id="avatarBox">
-      <img id="avatarImg" src="images\user.png" alt="Avatar">
-      <input type="file" id="avatarInput" accept="image/*" hidden>
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="logo">
+      <a href="home.html"><img src="images/logo.png" alt="Logo"></a>
     </div>
 
-    <div>
-      <h1 id="profileName"></h1>
-      <p id="profileEmail">—</p>
-      
+    <nav>
+      <a href="home.html">Home</a>
+      <a href="Boards.html">Boards</a>
+      <a href="cuet.html">CUET</a>
+      <a href="cafoundation.html">CA Foundation</a>
+      <a href="Profile.html" class="active">Profile</a>
+    </nav>
 
+    <div class="user-info">
+      <span>Welcome, <a href="Profile.html"><span id="usernameDisplay">User</span></a></span>
+      <button id="logoutBtn">Logout</button>
+      <button id="themeToggle">☀️</button>
+    </div>
+  </header>
 
-    <div class="stats-grid">
-      <div class="stat-card">
-        <h2 id="siteTime">0h 0m 0s</h2>
-        <span>Time Spent on Site</span>
+  <!-- PROFILE WRAPPER -->
+  <div class="profile-wrapper">
+
+    <!-- PROFILE HEADER -->
+    <div class="profile-header">
+      <div class="avatar avatar-upload" id="avatarBox">
+        <img id="avatarImg" src="images/user.png" alt="Avatar">
+        <input type="file" id="avatarInput" accept="image/*" hidden>
       </div>
 
-      <div class="stat-card">
-        <h2 id="lectureTime">0h 0m 0s</h2>
-        <span>Lecture Time</span>
+      <div class="profile-info">
+        <h1 id="profileName">User Name</h1>
+        <p id="profileEmail">user@email.com</p>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <h2 id="siteTime">0h 0m 0s</h2>
+            <span>Time Spent on Site</span>
+          </div>
+
+          <div class="stat-card">
+            <h2 id="lectureTime">0h 0m 0s</h2>
+            <span>Lecture Time</span>
+          </div>
+
+          <div class="stat-card streak">
+            <h2>🔥 <span id="streakCount">0</span></h2>
+            <span>Day Streak</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COURSE PROGRESS -->
+    <div class="course-progress">
+
+      <!-- BOARDS -->
+      <div class="course-card">
+        <div class="course-header">
+          <span>📘 Boards Progress</span>
+        </div>
+
+        <div class="course-bar">
+          <div id="boardsBar"></div>
+        </div>
+
+        <div id="boardsSubjects"></div>
       </div>
 
-      <div class="stat-card streak">
-        <h2>🔥 <span id="streakCount">0</span></h2>
-        <span>Day Streak</span>
+      <!-- CUET -->
+      <div class="course-card">
+        <div class="course-header">
+          <span>🎯 CUET Progress</span>
+        </div>
+
+        <div class="course-bar">
+          <div id="cuetBar"></div>
+        </div>
+
+        <div id="cuetSubjects"></div>
       </div>
+
+      <!-- CA FOUNDATION -->
+      <div class="course-card">
+        <div class="course-header">
+          <span>📚 CA Foundation Progress</span>
+        </div>
+
+        <div class="course-bar">
+          <div id="caBar"></div>
+        </div>
+
+        <div id="caSubjects"></div>
+      </div>
+
+      <!-- ACTIVITY -->
+      <div class="card">
+        <h3>📅 Activity History</h3>
+        <div id="activityList" class="activity-list"></div>
+      </div>
+
+      <!-- EDIT PROFILE -->
+      <div class="edit-section">
+        <h3>✏️ Edit Profile</h3>
+        <label for="nameInput">Full Name</label>
+        <input id="nameInput" placeholder="Enter your name">
+        <button id="saveNameBtn">Update Profile</button>
+      </div>
+
     </div>
   </div>
 
-  
+  <!-- FOOTER -->
+  <div class="footer-wrapper">
+    <footer class="footer">
+      <div class="footer-content">
+        <p>
+          <b>© 2025 Asprient.</b> All rights reserved. |
+          Developed By
+          <b><a href="https://www.linkedin.com/in/architraj499" target="_blank">Archit</a></b>
+        </p>
+
+        <div class="footer-links">
+          <a href="Privacy.html">Privacy Policy</a>
+          <a href="tou.html">Terms of Use</a>
+          <a href="contactus.html">Contact Us</a>
+          <a href="acd.html">Account Deletion</a>
+          <a href="personal.html">Personal Dashboard</a>
+        </div>
+      </div>
+    </footer>
   </div>
-   </div>
-  <!-- PROGRESS
-  <div class="progress-section">
-    <div class="progress-ring" id="progressRing" style="--percent:0">
-      <span id="coursePercent">0%</span>
-    </div> -->
-
-<div class="course-progress">
- 
-
-  <div class="course-card">
-    <!--  -->
-
-    <div class="course-bar">
-      <div id="boardsBar"></div>
-    </div>
-
-    <div id="boardsSubjects"></div>
-  </div>
-
-
-  <div class="course-card">
-    
-
-    <div class="course-bar">
-      <div id="cuetBar"></div>
-    </div>
-
-    <div id="cuetSubjects"></div>
-  </div>
-
-
-  <div class="course-card">
-   
-
-    <div class="course-bar">
-      <div id="caBar"></div>
-    </div>
-
-    <div id="caSubjects"></div>
-  </div>
-<div class="card">
-  <h3>📅 Activity History</h3>
-  <div id="activityList"></div>
-</div>
-
-
- <div class="edit-section">
-    <label>Full Name</label>
-    <input id="nameInput" placeholder="Enter your name">
-    <button id="saveNameBtn">Update Profile</button>
-  </div>
-
-
-
-
-</div>
-
-
-
-
-  <!-- EDIT -->
- 
-
-</div>
 
   <script type="module" src="JavaScript/profile.js"></script>
-
-  <div class="footer-wrapper">
-<footer class="footer">
-  <div class="footer-content">
-    <p><b>© 2025 Asprient. </b>All rights reserved. | Devloped By <b><a href="https://www.linkedin.com/in/architraj499" target="_blank">Archit</a></b></p> 
-    <div class="footer-links">
-      <a href="Privacy.html">Privacy Policy</a>
-      <a href="tou.html">Terms of Use</a>
-      <a href="contactus.html">Contact Us</a>
-      <a href="acd.html">Account Deletion</a>
-       <a href="personal.html">Personal Dashboard</a>
-    </div>
-  </div>
-</footer>
-</div>
-
-
 </body>
 </html>
