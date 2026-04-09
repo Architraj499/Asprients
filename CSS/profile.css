@@ -360,7 +360,7 @@ a{
 /* ================= EDIT SECTION ================= */
 
 .edit-section{
-  display:block;
+  display:none;
 }
 
 .edit-section label{
