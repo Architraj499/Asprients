@@ -549,3 +549,16 @@ a{
     font-size:18px;
   }
 }
+
+
+.course-bar-wrapper{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.course-bar-wrapper span{
+  font-size:14px;
+  font-weight:600;
+  white-space:nowrap;
+}

@@ -84,7 +84,18 @@ function getSubjectsByCourse(course) {
 /* =========================================================
    COURSE PROGRESS
 ========================================================= */
+let firestoreSubjectProgress = {};
+
 function getSubjectProgress(course, subject) {
+  // 🔥 first try firestore
+  if (
+    firestoreSubjectProgress?.[course] &&
+    firestoreSubjectProgress[course]?.[subject] !== undefined
+  ) {
+    return firestoreSubjectProgress[course][subject];
+  }
+
+  // fallback local
   const key = `progress_${course}_${subject}`;
   const value = localStorage.getItem(key);
   return value ? Number(value) : 0;
@@ -134,13 +145,25 @@ function renderSubjects(course, subjects, containerId) {
    COURSE BARS
 ========================================================= */
 function renderCourseBars() {
+  const boards = getCourseProgress("Boards");
+  const cuet = getCourseProgress("CUET");
+  const ca = getCourseProgress("CA Foundation");
+
   const boardsBar = document.getElementById("boardsBar");
   const cuetBar = document.getElementById("cuetBar");
   const caBar = document.getElementById("caBar");
 
-  if (boardsBar) boardsBar.style.width = getCourseProgress("Boards") + "%";
-  if (cuetBar) cuetBar.style.width = getCourseProgress("CUET") + "%";
-  if (caBar) caBar.style.width = getCourseProgress("CA Foundation") + "%";
+  const boardsPercent = document.getElementById("boardsPercent");
+  const cuetPercent = document.getElementById("cuetPercent");
+  const caPercent = document.getElementById("caPercent");
+
+  if (boardsBar) boardsBar.style.width = boards + "%";
+  if (cuetBar) cuetBar.style.width = cuet + "%";
+  if (caBar) caBar.style.width = ca + "%";
+
+  if (boardsPercent) boardsPercent.innerText = boards + "%";
+  if (cuetPercent) cuetPercent.innerText = cuet + "%";
+  if (caPercent) caPercent.innerText = ca + "%";
 }
 
 /* =========================================================
@@ -303,6 +326,10 @@ onAuthStateChanged(auth, async (user) => {
     if (!snap.exists()) return;
 
     const d = snap.data();
+    // 🔥 load subject progress from firestore
+if (d.subjectProgress) {
+  firestoreSubjectProgress = d.subjectProgress;
+}
 
     /* ---------- USER INFO ---------- */
     const profileName = document.getElementById("profileName");

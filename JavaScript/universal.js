@@ -98,9 +98,27 @@ async function saveActivity(type, title, lectureId = "", extra = {}) {
 }
 
 // ---------- Subject Progress ----------
-function saveSubjectProgress(course, subject, percent) {
+async function saveSubjectProgress(course, subject, percent) {
   const key = "progress_" + course + "_" + subject;
+
+  // keep local for fast UI
   localStorage.setItem(key, percent);
+
+  // 🔥 save to firestore
+  if (!currentUserId) return;
+
+  try {
+    const userRef = doc(db, "users", currentUserId);
+
+    await updateDoc(userRef, {
+      [`subjectProgress.${course}.${subject}`]: percent
+    });
+
+    console.log("Subject progress saved:", course, subject, percent);
+
+  } catch (err) {
+    console.error("Subject progress save error:", err);
+  }
 }
 
 function updateOverall() {
