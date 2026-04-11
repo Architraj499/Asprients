@@ -340,7 +340,7 @@ a{
   flex-direction:column;
   gap:10px;
 
-  max-height: 340px;
+  max-height: 280px;
   overflow-y:auto;
   padding-right:6px;
   scroll-behavior:smooth;
@@ -400,47 +400,41 @@ a{
 }
 
 /* ================= FOOTER ================= */
-
-.footer-wrapper{
-  margin-top:40px;
+footer {
+  background: var(--card);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  margin-top: 40px;
+  padding: 24px 0;
+  text-align: center;
+  color: var(--muted);
+  box-shadow: 0 -6px 20px rgba(0,0,0,0.2);
+}
+.footer-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.footer-links {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.footer-links a {
+  color: var(--muted);
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+.footer-links a:hover {
+  color: var(--accent-2);
+}
+/* Footer ke upar ka gap ka color fix karne ke liye */
+.footer-wrapper {
+  background: var(--card); /* jo color chahiye */
+  padding-top: 40px; /* margin-top ke jagah */
 }
 
-.footer{
-  background:var(--card);
-  padding:20px;
-  border-top:1px solid rgba(255,255,255,0.05);
-}
-
-.footer-content{
-  max-width:1100px;
-  margin:auto;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:20px;
-  flex-wrap:wrap;
-}
-
-.footer-content p{
-  color:var(--muted);
-  font-size:14px;
-}
-
-.footer-links{
-  display:flex;
-  gap:16px;
-  flex-wrap:wrap;
-}
-
-.footer-links a{
-  color:var(--muted);
-  font-size:14px;
-  transition:.25s;
-}
-
-.footer-links a:hover{
-  color:var(--accent-2);
-}
 
 /* ================= MOBILE ================= */
 
