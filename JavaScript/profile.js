@@ -209,7 +209,7 @@ async function loadActivity() {
 
       const icon =
         d.type === "lecture" ? "📺" :
-        d.type === "mock" ? "🧠" :
+        d.type === "mock_generate" ? "🧠" :
         d.type === "note" ? "📝" :
         "📌";
 
