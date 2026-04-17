@@ -15,6 +15,11 @@ import {
   orderBy
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
+import { getStorage, ref, uploadBytes, getDownloadURL } 
+from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
+
+const storage = getStorage();
+
 /* =========================================================
    GLOBALS
 ========================================================= */
@@ -87,7 +92,6 @@ function getSubjectsByCourse(course) {
 let firestoreSubjectProgress = {};
 
 function getSubjectProgress(course, subject) {
-  // 🔥 first try firestore
   if (
     firestoreSubjectProgress?.[course] &&
     firestoreSubjectProgress[course]?.[subject] !== undefined
@@ -95,7 +99,6 @@ function getSubjectProgress(course, subject) {
     return firestoreSubjectProgress[course][subject];
   }
 
-  // fallback local
   const key = `progress_${course}_${subject}`;
   const value = localStorage.getItem(key);
   return value ? Number(value) : 0;
@@ -188,9 +191,7 @@ async function loadActivity() {
     container.innerHTML = "";
 
     if (snap.empty) {
-      container.innerHTML = `
-        <div class="activity-item">No activity yet.</div>
-      `;
+      container.innerHTML = `<div class="activity-item">No activity yet.</div>`;
       return;
     }
 
@@ -224,48 +225,56 @@ async function loadActivity() {
 
   } catch (error) {
     console.error("Error loading activity:", error);
-    container.innerHTML = `
-      <div class="activity-item">Failed to load activity.</div>
-    `;
+    container.innerHTML = `<div class="activity-item">Failed to load activity.</div>`;
   }
 }
 
 /* =========================================================
-   AVATAR (LOCAL PREVIEW)
+   🔥 AVATAR (FIXED)
 ========================================================= */
-function setupAvatarUpload() {
+function setupAvatarUpload(userId) {
   const avatarBox = document.getElementById("avatarBox");
   const avatarInput = document.getElementById("avatarInput");
   const avatarImg = document.getElementById("avatarImg");
 
   if (!avatarBox || !avatarInput || !avatarImg) return;
 
-  const savedAvatar = localStorage.getItem("profileAvatar");
-  if (savedAvatar) {
-    avatarImg.src = savedAvatar;
-  }
-
-  avatarBox.addEventListener("click", () => {
+  avatarBox.onclick = () => {
     avatarInput.click();
-  });
+  };
 
-  avatarInput.addEventListener("change", () => {
+  avatarInput.onchange = async () => {
     const file = avatarInput.files?.[0];
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      alert("Please choose a valid image.");
+      alert("Select a valid image");
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = e => {
-      const imageData = e.target.result;
-      avatarImg.src = imageData;
-      localStorage.setItem("profileAvatar", imageData);
-    };
-    reader.readAsDataURL(file);
-  });
+    if (file.size > 1024 * 1024) {
+      alert("Max 1MB allowed");
+      return;
+    }
+
+    try {
+      const storageRef = ref(storage, `profilePics/${userId}`);
+
+      await uploadBytes(storageRef, file);
+
+      const url = await getDownloadURL(storageRef);
+
+      await updateDoc(doc(db, "users", userId), {
+        profilePic: url
+      });
+
+      avatarImg.src = url;
+
+    } catch (err) {
+      console.error("Avatar upload error:", err);
+      alert("Upload failed");
+    }
+  };
 }
 
 /* =========================================================
@@ -326,36 +335,33 @@ onAuthStateChanged(auth, async (user) => {
     if (!snap.exists()) return;
 
     const d = snap.data();
-    // 🔥 load subject progress from firestore
-if (d.subjectProgress) {
-  firestoreSubjectProgress = d.subjectProgress;
-}
+
+    if (d.subjectProgress) {
+      firestoreSubjectProgress = d.subjectProgress;
+    }
+
+    // 🔥 avatar load
+    const avatarImg = document.getElementById("avatarImg");
+    if (d.profilePic && avatarImg) {
+      avatarImg.src = d.profilePic;
+    }
 
     /* ---------- USER INFO ---------- */
-    const profileName = document.getElementById("profileName");
-    const profileEmail = document.getElementById("profileEmail");
-    const siteTime = document.getElementById("siteTime");
-    const lectureTime = document.getElementById("lectureTime");
-    const nameInput = document.getElementById("nameInput");
-    const usernameDisplay = document.getElementById("usernameDisplay");
-
-    if (profileName) profileName.innerText = d.fullname || "Student";
-    if (profileEmail) profileEmail.innerText = user.email || "—";
-    if (siteTime) siteTime.innerText = formatTime(d.totalSiteSeconds);
-    if (lectureTime) lectureTime.innerText = formatTime(d.totalLectureSeconds);
-    if (nameInput) nameInput.value = d.fullname || "";
-    if (usernameDisplay) usernameDisplay.innerText = d.fullname || "User";
+    document.getElementById("profileName").innerText = d.fullname || "Student";
+    document.getElementById("profileEmail").innerText = user.email || "—";
+    document.getElementById("siteTime").innerText = formatTime(d.totalSiteSeconds);
+    document.getElementById("lectureTime").innerText = formatTime(d.totalLectureSeconds);
+    document.getElementById("nameInput").value = d.fullname || "";
+    document.getElementById("usernameDisplay").innerText = d.fullname || "User";
 
     /* ---------- STREAK ---------- */
     const today = todayStr();
     let streak = d.streakCount || 0;
     let last = d.lastActiveDate;
 
-    if (!last) {
-      streak = 1;
-    } else {
+    if (!last) streak = 1;
+    else {
       const diff = dayDiff(today, last);
-
       if (diff === 1) streak += 1;
       else if (diff > 1) streak = 1;
     }
@@ -367,38 +373,16 @@ if (d.subjectProgress) {
       });
     }
 
-    const streakCount = document.getElementById("streakCount");
-    if (streakCount) streakCount.innerText = streak;
+    document.getElementById("streakCount").innerText = streak;
 
-    /* ---------- SUBJECT BARS ---------- */
-    renderSubjects(
-      "Boards",
-      getSubjectsByCourse("Boards"),
-      "boardsSubjects"
-    );
+    renderSubjects("Boards", getSubjectsByCourse("Boards"), "boardsSubjects");
+    renderSubjects("CUET", getSubjectsByCourse("CUET"), "cuetSubjects");
+    renderSubjects("CA Foundation", getSubjectsByCourse("CA Foundation"), "caSubjects");
 
-    renderSubjects(
-      "CUET",
-      getSubjectsByCourse("CUET"),
-      "cuetSubjects"
-    );
-
-    renderSubjects(
-      "CA Foundation",
-      getSubjectsByCourse("CA Foundation"),
-      "caSubjects"
-    );
-
-    /* ---------- COURSE BARS ---------- */
     renderCourseBars();
-
-    /* ---------- ACTIVITY ---------- */
     await loadActivity();
 
-    /* ---------- AVATAR ---------- */
-    setupAvatarUpload();
-
-    /* ---------- PROFILE UPDATE ---------- */
+    setupAvatarUpload(user.uid);
     setupProfileUpdate();
 
   } catch (error) {
