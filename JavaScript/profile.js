@@ -70,7 +70,7 @@ function getSubjectsByCourse(course) {
       "Business Studies",
       "Economics",
       "English",
-      "General Aptitude Test"
+      // "General Aptitude Test"
     ];
   }
 
