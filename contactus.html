@@ -71,7 +71,7 @@ button:hover {opacity:0.9; transform: translateY(-2px);}
   <form id="contactForm">
     <input type="text" name="name" placeholder="Your Name" required>
     <input type="email" name="email" placeholder="Your Email" required>
-    <input type="text" name="subject" placeholder="Subject" required>
+     <input type="text" name="subject" id="subject" placeholder="Subject" required>
     <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
     <button type="submit">Send Message</button>
   </form>
@@ -81,12 +81,12 @@ button:hover {opacity:0.9; transform: translateY(-2px);}
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
 (function(){
-   emailjs.init("46Tgd8p1iUW4cSexp"); // Replace with your EmailJS User ID
+   emailjs.init("hE9caZMTVqw0Uo97s"); // Replace with your EmailJS User ID
 })();
 
 document.getElementById('contactForm').addEventListener('submit', function(e){
   e.preventDefault();
-  emailjs.sendForm('service_7aplvuz','template_tdh9kws', this)
+  emailjs.sendForm('service_xwi8v2b', 'template_v8k469d', this)
     .then(function(){
       alert('Thank you! Your message has been sent successfully.');
       document.getElementById('contactForm').reset();
