@@ -163,10 +163,15 @@ a:-webkit-any-link {
   </div>
 </footer>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 <script type="module">
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { 
+
+import {
   getFirestore,
   collection,
   addDoc,
@@ -175,7 +180,14 @@ import {
   getDoc
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+
+/* ---------- EMAILJS INIT ---------- */
+
+emailjs.init("hE9caZMTVqw0Uo97s");
+
+
 /* ---------- FIREBASE CONFIG ---------- */
+
 const firebaseConfig = {
   apiKey: "AIzaSyDHRDRRm2KBmCuUf3qvTIRI5hO0aXFFx3w",
   authDomain: "asprients-95c1f.firebaseapp.com",
@@ -184,99 +196,222 @@ const firebaseConfig = {
   messagingSenderId: "453218332819",
   appId: "1:453218332819:web:5740173fa4d8156dae9d66"
 };
-/* ----------------------------------- */
+
+
+/* ---------- INITIALIZE ---------- */
 
 const app = initializeApp(firebaseConfig);
+
 const auth = getAuth(app);
+
 const db = getFirestore(app);
 
+
+/* ---------- DOM ELEMENTS ---------- */
+
 const userInfo = document.getElementById("userInfo");
+
 const form = document.getElementById("deleteForm");
+
 const submitBtn = document.getElementById("submitBtn");
+
 const loadingText = document.getElementById("loadingText");
+
 const successBox = document.getElementById("success");
+
 const errorBox = document.getElementById("errorBox");
+
 const errorFriendly = document.getElementById("errorFriendly");
+
 const errorDetails = document.getElementById("errorDetails");
+
 
 let currentFullname = "User";
 
-function clearMessages(){
+
+/* ---------- HELPERS ---------- */
+
+function clearMessages() {
+
   successBox.style.display = "none";
+
   errorBox.style.display = "none";
+
   errorFriendly.textContent = "";
+
   errorDetails.textContent = "";
+
 }
 
-function showError(err){
+
+function showError(err) {
+
   errorBox.style.display = "block";
+
   errorFriendly.textContent = err.code || "Unexpected error";
+
   errorDetails.textContent = err.message || String(err);
+
   successBox.style.display = "none";
+
 }
+
 
 /* ---------- AUTH STATE ---------- */
+
 onAuthStateChanged(auth, async (user) => {
+
   clearMessages();
 
   if (!user) {
+
     userInfo.innerHTML = `
       ⚠️ You must be signed in to submit a request.
       <a href="index.html" class="link">Go to login</a>
     `;
+
     form.style.display = "none";
+
     return;
   }
 
   try {
+
     const snap = await getDoc(doc(db, "users", user.uid));
+
     if (snap.exists()) {
+
       currentFullname = snap.data().fullname || "User";
+
     }
+
   } catch (err) {
+
     console.error("Failed to fetch fullname:", err);
+
   }
 
   userInfo.innerHTML = `
     <strong>Signed in as:</strong> ${currentFullname} (${user.email})
   `;
+
   form.style.display = "block";
+
 });
 
+
 /* ---------- SUBMIT DELETION REQUEST ---------- */
+
 form.addEventListener("submit", async (e) => {
+
   e.preventDefault();
+
   clearMessages();
 
   const user = auth.currentUser;
+
   if (!user) {
-    showError({ code: "unauthenticated", message: "User not logged in." });
+
+    showError({
+      code: "unauthenticated",
+      message: "User not logged in."
+    });
+
     return;
   }
 
   submitBtn.disabled = true;
+
   loadingText.style.display = "inline";
 
   try {
+
+    const reason = document.getElementById("reason").value.trim();
+
+    /* ---------- SAVE TO FIRESTORE ---------- */
+
     await addDoc(collection(db, "account_deletion_requests"), {
+
       name: currentFullname,
+
       email: user.email,
+
       userId: user.uid,
-      reason: document.getElementById("reason").value.trim(),
+
+      reason: reason,
+
       timestamp: serverTimestamp()
+
     });
 
+
+    /* ---------- SEND ADMIN EMAIL ---------- */
+
+    await emailjs.send(
+
+      "service_xwi8v2b",
+
+      "template_bxyypec",
+
+      {
+
+        type: "Account Deletion Request",
+
+        name: currentFullname,
+
+        email: user.email,
+
+        subject: "Account Deletion",
+
+        message: reason || "No reason provided"
+
+      }
+
+    );
+
+
+    /* ---------- SEND USER CONFIRMATION ---------- */
+
+    await emailjs.send(
+
+      "service_xwi8v2b",
+
+      "template_v8k469d",
+
+      {
+
+        name: currentFullname,
+
+        email: user.email,
+
+        type: "Account Deletion ",
+
+        custom_message: "Honestly, we’re a very sad to see you go. Asprients was built to help students stay focused, grow consistently, and achieve their goals — and having you as part of that journey truly meant a lot to us.Before we process your request, we’d genuinely love for you to reconsider. Even if things didn’t work perfectly for you, your feedback can help us improve and build a better experience for everyone. If there’s anything we can do to make things right, please let us know. We’re here to listen and help in any way we can."
+      }
+
+    );
+
+
     successBox.style.display = "block";
+
     form.reset();
 
   } catch (err) {
-    showError(err);
-  } finally {
-    submitBtn.disabled = false;
-    loadingText.style.display = "none";
-  }
-});
-</script>
 
+    console.error(err);
+
+    showError(err);
+
+  } finally {
+
+    submitBtn.disabled = false;
+
+    loadingText.style.display = "none";
+
+  }
+
+});
+
+</script>
 </body>
 </html>
