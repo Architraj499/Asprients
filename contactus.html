@@ -79,21 +79,55 @@ button:hover {opacity:0.9; transform: translateY(-2px);}
 
 <!-- EmailJS SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 <script>
-(function(){
-   emailjs.init("hE9caZMTVqw0Uo97s"); // Replace with your EmailJS User ID
+(function () {
+    emailjs.init("hE9caZMTVqw0Uo97s");
 })();
 
-document.getElementById('contactForm').addEventListener('submit', function(e){
-  e.preventDefault();
-  emailjs.sendForm('service_xwi8v2b', 'template_v8k469d', this)
-    .then(function(){
-      alert('Thank you! Your message has been sent successfully.');
-      document.getElementById('contactForm').reset();
-    }, function(error){
-      alert('Oops! Something went wrong. Please try again later.');
-      console.error(error);
+document.getElementById('contactForm').addEventListener('submit', function (e) {
+
+    e.preventDefault();
+
+    const form = this;
+
+    // Send message to admin
+    emailjs.sendForm(
+        'service_xwi8v2b',
+        'template_bxyypec',
+        form
+    )
+
+.then(function(){
+
+    return emailjs.send(
+        'service_xwi8v2b',
+        'template_v8k469d',
+        {
+            name: document.querySelector('[name="name"]').value,
+            email: document.querySelector('[name="email"]').value,
+            type: 'Contact Request',
+            custom_message:
+              'We appreciate you reaching out to us.'
+        }
+    );
+
+})
+
+    .then(function () {
+
+        alert('Thank you! Your message has been sent successfully.');
+        form.reset();
+
+    })
+
+    .catch(function (error) {
+
+        console.error(error);
+        alert('Oops! Something went wrong.');
+
     });
+
 });
 </script>
 <div class="footer-wrapper">
